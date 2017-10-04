@@ -79,9 +79,16 @@ class AddEvent extends Component {
                     <FormLabel>Event Description</FormLabel>
                     <FormInput onChangeText={(txt) => this.setState({ eventDesc: txt })} />
 
-                    <TouchableOpacity style={{ backgroundColor: "#009688", width: 130, padding: 5, marginBottom: 10, marginTop: 10 }} onPress={this._showDateTimePicker} >
+                    <TouchableOpacity style={{ flexDirection:'row', backgroundColor: "#009688", width: 160, padding: 5, marginBottom: 10, marginTop: 10 }} onPress={this._showDateTimePicker} >
+                        <Icon name="perm-contact-calendar" color="#fff" />
                         <Text style={{ color: '#fff' }}>Add Date and Time</Text>
                     </TouchableOpacity>
+
+                    <TouchableOpacity style={{ flexDirection:'row', backgroundColor: "#009688", width: 120, padding: 5, marginBottom: 10, marginTop: 10 }}>
+                        <Icon name="add-location" color="#fff" />
+                        <Text style={{ color: '#fff' }}>Set Location</Text>
+                    </TouchableOpacity>
+
                     <Button
                         title="Create Event"
                         onPress={() => this.handleCreateEvent()}

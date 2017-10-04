@@ -35,7 +35,7 @@ class Login extends Component {
     componentDidMount() {
         AuthService.LoadSigninUserAccounts().then((res) => {
             this.setState({ user: JSON.parse(res) })
-            console.log('chckiing response', this.state.user);
+            console.log('chckiing response from login', this.state.user);
         });
     }
     _handleLogin() {

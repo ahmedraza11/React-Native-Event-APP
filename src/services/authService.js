@@ -41,15 +41,15 @@ export class AuthService {
     }
     static HandleLogin(state, Accounts, navigation) {
         const { navigate } = navigation;
-        let Authenticated;
+        let Authenticated =false;
         let username;
         if (state.email !== null && state.password !== null) {
             userFilteredData = Accounts.some((v) => {
                 if (state.email == v.email && state.password == v.password) {
                     username= v.firstName;
                     Authenticated = true;
-                } else {
-                    Authenticated = false;
+                } else if(!Authenticated){
+                        // continue
                 }
             });
             if (Authenticated) {
