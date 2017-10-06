@@ -50,7 +50,7 @@ class EventList extends Component {
                     outerContainerStyles={{ backgroundColor: '#009688' }}
                 />
 
-                <ScrollView style={{ marginTop: 60 }}>
+                <ScrollView style={{ marginTop: 50 }}>
                     <List containerStyle={{ marginBottom: 20 }}>
                         {
                             this.state.events !== null?
