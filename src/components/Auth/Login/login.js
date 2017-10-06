@@ -25,8 +25,8 @@ class Login extends Component {
         super();
         this.state = {
             user: Object,
-            email: null,
-            password: null,
+            email: "ahmed@gmail.com",
+            password: 'aaaaaaaa',
         }
     }
     static navigationOptions = {
@@ -61,11 +61,14 @@ class Login extends Component {
                         <FormInput
                             keyboardType="email-address"
                             onChangeText={(txt) => this.setState({ email: txt })}
+                            dataDetectorTypes="email"
+                            value="ahmed@gmail.com"
                         />
                         <FormLabel>Password</FormLabel>
                         <FormInput
                             secureTextEntry={true}
                             onChangeText={(txt) => this.setState({ password: txt })}
+                            value="aaaaaaaa"
                         />
 
                     </View>

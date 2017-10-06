@@ -18,6 +18,7 @@ import {
 } from 'react-native-elements';
 import ActionButton from 'react-native-action-button';
 import { AddEventService } from '../../services/addEventService';
+import RNGooglePlaces from 'react-native-google-places';
 
 const Events = [];
 class EventList extends Component {
@@ -25,7 +26,11 @@ class EventList extends Component {
         super();
         this.state = {
             DrawerOpen: true,
-            events: []
+            events: [],
+            latitute: '',
+            longitute: '',
+            placeName: '',
+            placeAddress: '',
         }
     }
     static navigationOptions = {
@@ -35,6 +40,10 @@ class EventList extends Component {
         AsyncStorage.getItem('Events', (err, res) => {
             this.setState({ events: JSON.parse(res) });
         })
+    }
+
+    OpenSearchModal(){
+        // RNGooglePlaces.openAutocompleteModal()
     }
 
     render() {
@@ -49,7 +58,6 @@ class EventList extends Component {
                     centerComponent={{ text: 'Event List', style: { color: '#fff' } }}
                     outerContainerStyles={{ backgroundColor: '#009688' }}
                 />
-
                 <ScrollView style={{ marginTop: 50 }}>
                     <List containerStyle={{ marginBottom: 20 }}>
                         {
@@ -71,7 +79,6 @@ class EventList extends Component {
                 <ActionButton buttonColor="#009688"
                     onPress={() => navigate('AddEvent')}
                 />
-
             </View>
         );
     }

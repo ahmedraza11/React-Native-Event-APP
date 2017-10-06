@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import {
   View,
   Text,
-  Button,
   TouchableOpacity,
   AsyncStorage,
   Modal,
@@ -16,11 +15,13 @@ import {
   Header,
   Card,
   FormInput,
+  Button,
   FormLabel
 } from "react-native-elements";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import MapView from "react-native-maps";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
+import RNGooglePlaces from "react-native-google-places";
 
 const Events = [];
 class AddEvent extends Component {
@@ -67,6 +68,23 @@ class AddEvent extends Component {
   handleCreateEvent() {
     const eventData = AddEventService.createEvent(this.state, Events);
     console.log("Event Data", eventData);
+  }
+
+  openSearchModal() {
+    RNGooglePlaces.openAutocompleteModal({
+      type: "establishment",
+      country: "CA",
+      latitude: 53.544389,
+      longitude: -113.490927,
+      radius: 10,
+      useOverlay:false
+    })
+      .then(place => {
+        console.log("Places==========>", place);
+        // place represents user's selection from the
+        // suggestions and it is a simplified Google Place object.
+      })
+      .catch(error => console.log(error.message));
   }
 
   render() {
@@ -157,7 +175,7 @@ class AddEvent extends Component {
               marginTop: 10
             }}
             onPress={() => {
-              this.handleModal();
+              this.openSearchModal();
             }}
           >
             <Icon name="add-location" color="#fff" />
@@ -177,7 +195,11 @@ class AddEvent extends Component {
           mode="datetime"
         />
 
-        <Modal animationType="slide" visible={this.state.isModalOpen}>
+        <Modal
+          animationType="slide"
+          visible={this.state.isModalOpen}
+          style={{ display: "flex" }}
+        >
           <View style={styles.container}>
             <MapView
               initialRegion={{
@@ -198,13 +220,29 @@ class AddEvent extends Component {
               />
             </MapView>
           </View>
-          <TouchableOpacity
-            onPress={() => {
-              this.handleModal();
+
+          <View
+            style={{
+              justifyContent: "flex-end",
+              height: "100%",
+              paddingBottom: 30,
+              flexDirection: "column"
             }}
           >
-            <Text> Done </Text>
-          </TouchableOpacity>
+            <Button
+              title="Search For Places"
+              buttonStyle={{ backgroundColor: "#009688", marginBottom: 3 }}
+              onPress={() => this.openSearchModal()}
+            />
+            <Button
+              raised
+              title="Done"
+              buttonStyle={{ backgroundColor: "#8BC34A" }}
+              onPress={() => {
+                this.handleModal();
+              }}
+            />
+          </View>
         </Modal>
       </KeyboardAwareScrollView>
     );
