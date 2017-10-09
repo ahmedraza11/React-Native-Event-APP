@@ -27,10 +27,6 @@ class EventList extends Component {
         this.state = {
             DrawerOpen: true,
             events: [],
-            latitute: '',
-            longitute: '',
-            placeName: '',
-            placeAddress: '',
         }
     }
     static navigationOptions = {

@@ -33,14 +33,9 @@ class Signup extends Component {
         const data = AuthService.LoadSignupUserAccounts(Accounts);
         console.log("sign up data ",data)        
     }
-    // componentDidMount(){
-    //     this.state.Accounts == null ?
-    //     this.state.Accounts.push({firstName:"abc",lastName:"abc",email:"abc",password:"abc"}) : null
-    // }
     static navigationOptions = {
         header: null
     };
-    
     _handleSignup() {
         const data = AuthService.HandleSignup(this.state, this.props.navigation, Accounts);
         console.log("Accounts from Signup", data);
@@ -65,22 +60,28 @@ class Signup extends Component {
                             <FormLabel>First Name</FormLabel>
                             <FormInput
                                 onChangeText={(txt) => this.setState({ firstName: txt })}
+                                value={this.state.firstName}
+
                             />
 
                             <FormLabel>Last Name</FormLabel>
                             <FormInput
                                 onChangeText={(txt) => this.setState({ lastName: txt })}
+                                value={this.state.lastName}
+                                
                             />
 
                             <FormLabel>Email</FormLabel>
                             <FormInput
                                 keyboardType="email-address"
+                                value={this.state.email}
                                 onChangeText={(txt) => this.setState({ email: txt })}
                             />
 
                             <FormLabel>Password</FormLabel>
                             <FormInput
                                 secureTextEntry={true}
+                                value={this.state.password}
                                 onChangeText={(txt) => this.setState({ password: txt })}
                             />
                         </View>

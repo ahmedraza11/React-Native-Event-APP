@@ -28,7 +28,10 @@ export class AddEventService {
         const event = {
             eventName: state.eventName,
             eventDesc: state.eventDesc,
-            date: state.selectedDateTime,
+            placeName: state.name,
+            placeAddress: state.address,
+            date: state.Date,
+            time: state.Time,
             createdBy: state.createdBy
         }
 

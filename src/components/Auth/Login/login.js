@@ -61,14 +61,14 @@ class Login extends Component {
                         <FormInput
                             keyboardType="email-address"
                             onChangeText={(txt) => this.setState({ email: txt })}
-                            dataDetectorTypes="email"
-                            value="ahmed@gmail.com"
+                            dataDetectorTypes="address"
+                            value={this.state.email}
                         />
                         <FormLabel>Password</FormLabel>
                         <FormInput
                             secureTextEntry={true}
                             onChangeText={(txt) => this.setState({ password: txt })}
-                            value="aaaaaaaa"
+                            value={this.state.password}
                         />
 
                     </View>

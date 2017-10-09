@@ -10,12 +10,13 @@ import Settings from '../components/Settings/settings';
 
 const drawNavigator = DrawerNavigator({
     EventList: { screen: EventList },
-    EventDetail: { screen: EventDetail },
     AddEvent: { screen: AddEvent },
     Setting: {screen: Settings},
     Logout: {screen: Login}
 }, {
-        contentComponent: props => <ScrollView><DrawerItems {...props} /></ScrollView>,
+contentComponent: props =>{ 
+    console.log('laskdasd', props)
+    return (<ScrollView><DrawerItems {...props}  key={props}/></ScrollView>)},
         contentOptions: {
             activeTintColor: '#FF69B4',
             style: {

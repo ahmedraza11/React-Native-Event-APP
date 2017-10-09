@@ -34,7 +34,13 @@ class AddEvent extends Component {
       eventDesc: null,
       eventName: null,
       createdBy: this.props.navigation.state.params.name,
-      isModalOpen: false
+      isModalOpen: false,
+      latitude: 24.8729899,
+      longitude: 67.0416933,
+      name: null,
+      Date: null,
+      Time:null,
+      address: null
     };
   }
   componentWillMount() {
@@ -59,9 +65,17 @@ class AddEvent extends Component {
   }
 
   _handleDatePicked = date => {
+    const checkDate = new Date(date);
+    const selectedDate = checkDate.getDate()+"/"+checkDate.getMonth()+"/"+checkDate.getFullYear();
+    const selectedTime = checkDate.getHours()+":"+checkDate.getMinutes();
+    console.log("Full Date format",selectedDate);
+    console.log("Full Time format",selectedTime);
+
     this.setState({
-      selectedDateTime: date
+       Date: selectedDate,
+       Time: selectedTime
     });
+              
     this._hideDateTimePicker();
   };
 
@@ -73,21 +87,28 @@ class AddEvent extends Component {
   openSearchModal() {
     RNGooglePlaces.openAutocompleteModal({
       type: "establishment",
-      country: "CA",
-      latitude: 53.544389,
-      longitude: -113.490927,
+      latitude: this.state.latitude,
+      longitude: this.state.longitude,
+      name: "",
+      address: "",
       radius: 10,
-      useOverlay:false
+      useOverlay: false
     })
       .then(place => {
         console.log("Places==========>", place);
-        // place represents user's selection from the
-        // suggestions and it is a simplified Google Place object.
+        this.setState({
+          latitude: place.latitude,
+          longitude: place.longitude,
+          name: place.name,
+          address: place.address
+        });
+        let copy = Object.assign({}, place);
       })
       .catch(error => console.log(error.message));
   }
 
   render() {
+    console.log("Google Place in State", this.state.name, this.state.address);
     const { navigate, goBack } = this.props.navigation;
     return (
       <KeyboardAwareScrollView
@@ -149,42 +170,43 @@ class AddEvent extends Component {
                 eventDesc: txt
               })}
           />
+          <View style={{marginLeft:15}}>
+            <TouchableOpacity
+              style={{
+                flexDirection: "row",
+                backgroundColor: "#4DD0E1",
+                width: 160,
+                padding: 5,
+                marginBottom: 2,
+                marginTop: 10
+              }}
+              onPress={this._showDateTimePicker}
+            >
+              <Icon name="perm-contact-calendar" color="#fff" />
+              <Text style={{ color: "#fff" }}> Add Date and Time </Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={{
-              flexDirection: "row",
-              backgroundColor: "#009688",
-              width: 160,
-              padding: 5,
-              marginBottom: 10,
-              marginTop: 10
-            }}
-            onPress={this._showDateTimePicker}
-          >
-            <Icon name="perm-contact-calendar" color="#fff" />
-            <Text style={{ color: "#fff" }}> Add Date and Time </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={{
-              flexDirection: "row",
-              backgroundColor: "#009688",
-              width: 120,
-              padding: 5,
-              marginBottom: 10,
-              marginTop: 10
-            }}
-            onPress={() => {
-              this.openSearchModal();
-            }}
-          >
-            <Icon name="add-location" color="#fff" />
-            <Text style={{ color: "#fff" }}> Set Location </Text>
-          </TouchableOpacity>
-
+            <TouchableOpacity
+              style={{
+                flexDirection: "row",
+                backgroundColor: "#4DD0E1",
+                width: 120,
+                padding: 5,
+                marginBottom: 19,
+                marginTop: 10
+              }}
+              onPress={() => {
+                this.handleModal();
+              }}
+            >
+              <Icon name="add-location" color="#fff" />
+              <Text style={{ color: "#fff" }}> Set Location </Text>
+            </TouchableOpacity>
+          </View>
           <Button
             title="Create Event"
             onPress={() => this.handleCreateEvent()}
+            buttonStyle={{backgroundColor:"#009688"}}
           />
         </Card>
 
@@ -199,22 +221,29 @@ class AddEvent extends Component {
           animationType="slide"
           visible={this.state.isModalOpen}
           style={{ display: "flex" }}
+          onRequestClose={() => {console.log("Modal has been closed.")}}
         >
           <View style={styles.container}>
             <MapView
               initialRegion={{
-                latitude: 37.78825,
-                longitude: -122.4324,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421
+                latitude: this.state.latitude,
+                longitude: this.state.longitude,
+                latitudeDelta: 6.0922,
+                longitudeDelta: 3.0421
+              }}
+              region={{
+                latitude: this.state.latitude,
+                longitude: this.state.longitude,
+                latitudeDelta: 6.0922,
+                longitudeDelta: 3.0421
               }}
               style={styles.map}
             >
               <MapView.Marker
                 draggable
                 coordinate={{
-                  latitude: 37.78825,
-                  longitude: -122.4324
+                  latitude: this.state.latitude,
+                  longitude: this.state.longitude
                 }}
                 onDragEnd={e => console.log("onDragEnd", e.nativeEvent)}
               />
