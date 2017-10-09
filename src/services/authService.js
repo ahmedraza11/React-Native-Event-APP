@@ -15,13 +15,14 @@ export class AuthService {
   }
   static HandleSignup(state, navigation, Accounts) {
     const { navigate } = navigation;
-    
+
     const user = {
+      id: new Date(),
       firstName: state.firstName,
       lastName: state.lastName,
       email: state.email,
       password: state.password,
-      profileImage: null
+      profileImage: state.avatarSource
     };
 
     if (
@@ -35,11 +36,11 @@ export class AuthService {
         ToastAndroid.show("Registered Successfull ", ToastAndroid.SHORT);
         navigate("loginScreen");
         this.setState({
-            firstName: "",
-            lastName: "",
-            email: "",
-            password: ""
-        })
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: ""
+        });
       });
     } else {
       ToastAndroid.show("Please Fill up the Form", ToastAndroid.SHORT);
@@ -47,28 +48,40 @@ export class AuthService {
 
     return Accounts;
   }
-  
+
   static HandleLogin(state, Accounts, navigation) {
     const { navigate } = navigation;
     let Authenticated = false;
-    let username;
-  
+    let firstName, lastName, email, password, profileImage, id;
+
     if (state.email !== null && state.password !== null) {
-  
-        userFilteredData = Accounts.some(v => {
+      userFilteredData = Accounts.some(v => {
         if (state.email == v.email && state.password == v.password) {
-          username = v.firstName;
+          id = v.id;
+          firstName = v.firstName;
+          lastName = v.lastName;
+          email = v.email;
+          password = v.password;
+          profileImage = v.profileImage;
+
           Authenticated = true;
         }
       });
-  
+
       if (Authenticated) {
         ToastAndroid.show("Logged in Successfull ", ToastAndroid.SHORT);
-        navigate("eventListScreen", { name: username });
+        navigate("eventListScreen", {
+          id: id,
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          password: password,
+          profileImage: profileImage
+        });
       } else {
         ToastAndroid.show("Invalid Username or Password ", ToastAndroid.SHORT);
       }
-  
+
       return userFilteredData;
     } else {
       ToastAndroid.show("Please fill up the Form ", ToastAndroid.SHORT);

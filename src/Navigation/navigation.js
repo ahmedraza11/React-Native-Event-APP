@@ -7,10 +7,12 @@ import EventList from '../components/EventList/eventList';
 import AddEvent from '../components/AddEvent/addEvent';
 import EventDetail from '../components/EventDetail/eventDetail';
 import Settings from '../components/Settings/settings';
+import Profile from '../components/Auth/Profile/profile';
 
 const drawNavigator = DrawerNavigator({
     EventList: { screen: EventList },
     AddEvent: { screen: AddEvent },
+    MyProfile: {screen: Profile},
     Setting: {screen: Settings},
     Logout: {screen: Login}
 }, {
@@ -35,7 +37,9 @@ export const navigation = StackNavigator({
     EventDetail: { screen: EventDetail },
     AddEvent: { screen: AddEvent },
     Setting: {screen: Settings},
+    Profile: {screen: Profile},
     eventListScreen: { screen: drawNavigator }
+
 }, {
         headerMode: 'screen',
         initialRouteName: 'loginScreen',

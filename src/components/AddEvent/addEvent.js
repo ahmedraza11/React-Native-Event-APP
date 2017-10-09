@@ -66,7 +66,7 @@ class AddEvent extends Component {
 
   _handleDatePicked = date => {
     const checkDate = new Date(date);
-    const selectedDate = checkDate.getDate()+"/"+checkDate.getMonth()+"/"+checkDate.getFullYear();
+    const selectedDate = checkDate.getDate()+"-"+checkDate.getMonth()+"-"+checkDate.getFullYear();
     const selectedTime = checkDate.getHours()+":"+checkDate.getMinutes();
     console.log("Full Date format",selectedDate);
     console.log("Full Time format",selectedTime);
