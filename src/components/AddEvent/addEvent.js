@@ -33,7 +33,7 @@ class AddEvent extends Component {
       selectedDateTime: null,
       eventDesc: null,
       eventName: null,
-      createdBy: this.props.navigation.state.params.name,
+      createdBy: this.props.navigation.state.params.firstName,
       isModalOpen: false,
       latitude: 24.8729899,
       longitude: 67.0416933,

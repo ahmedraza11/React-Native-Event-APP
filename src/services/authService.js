@@ -63,7 +63,6 @@ export class AuthService {
           email = v.email;
           password = v.password;
           profileImage = v.profileImage;
-
           Authenticated = true;
         }
       });
@@ -85,6 +84,34 @@ export class AuthService {
       return userFilteredData;
     } else {
       ToastAndroid.show("Please fill up the Form ", ToastAndroid.SHORT);
+    }
+  }
+
+  static UpdateProfile(state,users,navigate){
+    if(users!==null){
+      users.filter((ele,i)=>{
+          if(ele.id==state.user.id){
+            users.splice(i,1);
+            users.push({
+              id: state.user.id,
+              firstName: state.user.firstName,
+              lastName: state.user.lastName,
+              email: state.user.email,
+              password: state.user.password,
+              profileImage: state.user.profileImage
+            });
+            AsyncStorage.setItem('FeedAccount',JSON.stringify(users)).then(()=>{
+              ToastAndroid.show("Update Successfull ", ToastAndroid.SHORT);
+              navigate('eventListScreen',{
+                id: state.user.id,
+                firstName: state.user.firstName,
+                lastName: state.user.lastName,
+                email: state.user.email,
+                password: state.user.password,
+              });
+            })
+          }
+      });
     }
   }
 }
