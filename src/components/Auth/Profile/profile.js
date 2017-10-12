@@ -20,6 +20,7 @@ import {
   FormLabel
 } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
+import ImagePicker from "react-native-image-picker";
 
 class Profile extends Component {
   constructor(props) {
@@ -68,6 +69,35 @@ class Profile extends Component {
     const { navigate } = this.props.navigation;
     AuthService.UpdateProfile(this.state, this.state.currentUser, navigate);
   }
+
+  openCamera() {
+    var options = {
+      title: "Select Profile Picture",
+      storageOptions: {
+        skipBackup: true,
+        path: "images"
+      }
+    };
+    ImagePicker.showImagePicker(options, response => {
+      console.log("Response = ", response);
+
+      if (response.didCancel) {
+        console.log("User cancelled image picker");
+      } else if (response.error) {
+        console.log("ImagePicker Error: ", response.error);
+      } else if (response.customButton) {
+        console.log("User tapped custom button: ", response.customButton);
+      } else {
+        let source = { uri: response.uri };
+        const user = { ...this.state.user };
+        user.profileImage = source;
+        this.setState({
+          user
+        });
+        console.log("image in state", this.state.user.profileImage);
+      }
+    });
+  }
   render() {
     const { navigate, goBack, state } = this.props.navigation;
     return (
@@ -96,13 +126,13 @@ class Profile extends Component {
           }
           outerContainerStyles={{ backgroundColor: "#009688" }}
         />
-        <Card containerStyle={{ marginTop: 75 }} title={state.params.id}>
+        <Card containerStyle={{ marginTop: 75 }}>
           <View style={ProfileStyles.AvatarContainer}>
             <Avatar
               large
               rounded
               source={this.state.user.profileImage}
-              onPress={() => console.log("Works!")}
+              onPress={() => this.openCamera()}
               activeOpacity={0.7}
             />
             <Text style={ProfileStyles.AvatarName}>
@@ -203,8 +233,11 @@ class Profile extends Component {
             buttonStyle={ProfileStyles.editButton}
             raised
             icon={{ name: this.state.isEditMode ? "done" : "edit" }}
-            onPress={this.state.isEditMode?() => this.updateUserData():this.setState({isEditMode:true})}
-
+            onPress={
+              this.state.isEditMode
+                ? () => this.updateUserData()
+                : this.setState({ isEditMode: true })
+            }
             title={this.state.isEditMode ? "Update" : "Edit Your Profile"}
           />
         </Card>

@@ -87,12 +87,25 @@ export class AuthService {
     }
   }
 
-  static UpdateProfile(state,users,navigate){
-    if(users!==null){
-      users.filter((ele,i)=>{
-          if(ele.id==state.user.id){
-            users.splice(i,1);
-            users.push({
+  static UpdateProfile(state, users, navigate) {
+    if (users !== null) {
+      users.filter((ele, i) => {
+        if (ele.id == state.user.id) {
+          users.splice(i, 1);
+          users.push({
+            id: state.user.id,
+            firstName: state.user.firstName,
+            lastName: state.user.lastName,
+            email: state.user.email,
+            password: state.user.password,
+            profileImage: state.user.profileImage
+          });
+          AsyncStorage.setItem(
+            "FeedAccount",
+            JSON.stringify(users)
+          ).then(() => {
+            ToastAndroid.show("Update Successfull ", ToastAndroid.SHORT);
+            navigate("eventListScreen", {
               id: state.user.id,
               firstName: state.user.firstName,
               lastName: state.user.lastName,
@@ -100,17 +113,8 @@ export class AuthService {
               password: state.user.password,
               profileImage: state.user.profileImage
             });
-            AsyncStorage.setItem('FeedAccount',JSON.stringify(users)).then(()=>{
-              ToastAndroid.show("Update Successfull ", ToastAndroid.SHORT);
-              navigate('eventListScreen',{
-                id: state.user.id,
-                firstName: state.user.firstName,
-                lastName: state.user.lastName,
-                email: state.user.email,
-                password: state.user.password,
-              });
-            })
-          }
+          });
+        }
       });
     }
   }
