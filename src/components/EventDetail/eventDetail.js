@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { eventDetailStyles } from "./eventDetailStyles";
+import { AddEventService } from "../../services/addEventService";
 import {
   View,
   Text,
@@ -8,7 +9,6 @@ import {
   TouchableOpacity,
   ScrollView
 } from "react-native";
-import { AddEventService } from "../../services/addEventService";
 
 import { Header, Icon, Card, Divider } from "react-native-elements";
 
@@ -23,9 +23,7 @@ class EventDetail extends Component {
   }
 
   componentDidMount() {
-    console.log("response Check");
     AsyncStorage.getItem("Events", (err, res) => {
-      console.log("response", res);
       this.setState({ event: JSON.parse(res) });
     });
   }
@@ -36,8 +34,6 @@ class EventDetail extends Component {
 
   render() {
     const { navigate, goBack } = this.props.navigation;
-    console.log("List Detail Data", this.state.event);
-    console.log("Current Event id Data", this.state.eventId);
     return (
       <View>
         <Header

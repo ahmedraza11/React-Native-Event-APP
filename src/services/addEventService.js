@@ -39,7 +39,6 @@ export class AddEventService {
             AsyncStorage.setItem('Events',JSON.stringify(Events)).then(()=>{
                 ToastAndroid.show("Event Created!" ,ToastAndroid.SHORT);
             });
-            // ToastAndroid.show("Please fill up the Form" ,ToastAndroid.SHORT);
         return event;
         }
 }

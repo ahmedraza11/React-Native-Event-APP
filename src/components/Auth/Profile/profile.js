@@ -6,8 +6,8 @@ import {
   Image,
   TouchableOpacity
 } from "react-native";
-import { ProfileStyles } from "./profileStyles";
 import { AuthService } from "../../../services/authService";
+import { ProfileStyles } from "./profileStyles";
 
 import {
   Header,
@@ -27,32 +27,36 @@ class Profile extends Component {
     super(props);
     this.state = {
       user: {
-        id: null,
+        profileImage: null,
         firstName: null,
+        password: null,
         lastName: null,
         email: null,
-        password: null,
-        profileImage: null
+        id: null
       },
-      isEditMode: false,
-      currentUser: Object
+      currentUser: Object,
+      isEditMode: false
     };
   }
+
   static navigationOptions = {
     header: null
   };
+
   componentWillMount() {
     const { state } = this.props.navigation;
+
     this.setState({
       user: {
-        id: state.params.id,
+        profileImage: state.params.profileImage,
         firstName: state.params.firstName,
         lastName: state.params.lastName,
-        email: state.params.email,
         password: state.params.password,
-        profileImage: state.params.profileImage
+        email: state.params.email,
+        id: state.params.id
       }
     });
+
     AuthService.LoadSigninUserAccounts().then(res => {
       this.setState({ currentUser: JSON.parse(res) });
       console.log(
@@ -61,11 +65,12 @@ class Profile extends Component {
       );
     });
   }
+
   componentDidMount() {
     console.log(this.props.navigation);
   }
+
   updateUserData() {
-    // this.setState({ isEditMode: !this.state.isEditMode })
     const { navigate } = this.props.navigation;
     AuthService.UpdateProfile(this.state, this.state.currentUser, navigate);
   }
@@ -78,9 +83,8 @@ class Profile extends Component {
         path: "images"
       }
     };
-    ImagePicker.showImagePicker(options, response => {
-      console.log("Response = ", response);
 
+    ImagePicker.showImagePicker(options, response => {
       if (response.didCancel) {
         console.log("User cancelled image picker");
       } else if (response.error) {
@@ -88,16 +92,18 @@ class Profile extends Component {
       } else if (response.customButton) {
         console.log("User tapped custom button: ", response.customButton);
       } else {
+
         let source = { uri: response.uri };
+
         const user = { ...this.state.user };
         user.profileImage = source;
         this.setState({
           user
         });
-        console.log("image in state", this.state.user.profileImage);
       }
     });
   }
+
   render() {
     const { navigate, goBack, state } = this.props.navigation;
     return (

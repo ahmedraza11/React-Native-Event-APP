@@ -1,26 +1,25 @@
 export const ProfileStyles = {
   AvatarContainer: {
-    display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
+    display: "flex"
   },
   AvatarName: {
-    // fontWeight: "bold",
     fontSize: 20,
     marginTop: 40,
     marginLeft: 10
   },
   Detail: {
-    display: "flex",
-    flexDirection: "row",
     justifyContent: "center",
+    flexDirection: "row",
+    display: "flex",
     marginTop: 15
   },
   heading: {
-    fontWeight: "bold",
-    justifyContent: "flex-start"
+    justifyContent: "flex-start",
+    fontWeight: "bold"
   },
   editButton: {
-      backgroundColor: '#009688',
-      marginTop: 20
+    backgroundColor: "#009688",
+    marginTop: 20
   }
 };

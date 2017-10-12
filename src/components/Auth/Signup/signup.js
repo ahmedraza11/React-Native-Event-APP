@@ -17,15 +17,14 @@ import {
   Icon,
   Avatar
 } from "react-native-elements";
-import { AuthService } from "../../../services/authService";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
+import { AuthService } from "../../../services/authService";
 import ImagePicker from "react-native-image-picker";
 
 const Accounts = [];
 class Signup extends Component {
   constructor() {
     super();
-    // this.camera = null;
     this.state = {
       modalOpen: false,
       firstName: null,
@@ -40,7 +39,9 @@ class Signup extends Component {
       Accounts: []
     };
   }
+
   openCamera() {
+
     var options = {
       title: "Select Profile Picture",
       storageOptions: {
@@ -48,9 +49,8 @@ class Signup extends Component {
         path: "images"
       }
     };
-    ImagePicker.showImagePicker(options, response => {
-      console.log("Response = ", response);
 
+    ImagePicker.showImagePicker(options, response => {
       if (response.didCancel) {
         console.log("User cancelled image picker");
       } else if (response.error) {
@@ -65,21 +65,23 @@ class Signup extends Component {
       }
     });
   }
+
   componentWillMount() {
     const data = AuthService.LoadSignupUserAccounts(Accounts);
-    console.log("sign up data ", data);
   }
+
   static navigationOptions = {
     header: null
   };
+
   _handleSignup() {
     const data = AuthService.HandleSignup(
       this.state,
       this.props.navigation,
       Accounts
     );
-    console.log("Accounts from Signup", data);
   }
+
   render() {
     const { navigate } = this.props.navigation;
     return (

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { AddEventService } from "../../services/addEventService";
 import {
   View,
   Text,
@@ -7,8 +8,6 @@ import {
   Modal,
   StyleSheet
 } from "react-native";
-import { AddEventService } from "../../services/addEventService";
-// import { addEventStyles } from './eventDetailStyles';
 
 import {
   Icon,
@@ -18,10 +17,10 @@ import {
   Button,
   FormLabel
 } from "react-native-elements";
-import DateTimePicker from "react-native-modal-datetime-picker";
-import MapView from "react-native-maps";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
+import DateTimePicker from "react-native-modal-datetime-picker";
 import RNGooglePlaces from "react-native-google-places";
+import MapView from "react-native-maps";
 
 const Events = [];
 class AddEvent extends Component {
@@ -29,23 +28,22 @@ class AddEvent extends Component {
     super(props);
 
     this.state = {
+      createdBy: this.props.navigation.state.params.firstName,
       isDateTimePickerVisible: false,
       selectedDateTime: null,
-      eventDesc: null,
-      eventName: null,
-      createdBy: this.props.navigation.state.params.firstName,
       isModalOpen: false,
+      eventName: null,
+      eventDesc: null,
       latitude: 24.8729899,
       longitude: 67.0416933,
+      address: null,
       name: null,
       Date: null,
-      Time:null,
-      address: null
+      Time: null
     };
   }
   componentWillMount() {
     const data = AddEventService.loadEvents(Events);
-    console.log("All Events ", Events);
   }
 
   _showDateTimePicker = () =>
@@ -66,49 +64,50 @@ class AddEvent extends Component {
 
   _handleDatePicked = date => {
     const checkDate = new Date(date);
-    const selectedDate = checkDate.getDate()+"-"+checkDate.getMonth()+"-"+checkDate.getFullYear();
-    const selectedTime = checkDate.getHours()+":"+checkDate.getMinutes();
-    console.log("Full Date format",selectedDate);
-    console.log("Full Time format",selectedTime);
+
+    const selectedDate =
+      checkDate.getDate() +
+      "-" +
+      checkDate.getMonth() +
+      "-" +
+      checkDate.getFullYear();
+
+    const selectedTime = checkDate.getHours() + ":" + checkDate.getMinutes();
 
     this.setState({
-       Date: selectedDate,
-       Time: selectedTime
+      Date: selectedDate,
+      Time: selectedTime
     });
-              
+
     this._hideDateTimePicker();
   };
 
   handleCreateEvent() {
     const eventData = AddEventService.createEvent(this.state, Events);
-    console.log("Event Data", eventData);
   }
 
   openSearchModal() {
-    RNGooglePlaces.openAutocompleteModal({
-      type: "establishment",
-      latitude: this.state.latitude,
+      RNGooglePlaces.openAutocompleteModal({
       longitude: this.state.longitude,
-      name: "",
+      latitude: this.state.latitude,
+      type: "establishment",
+      useOverlay: false,
       address: "",
       radius: 10,
-      useOverlay: false
+      name: ""
     })
       .then(place => {
-        console.log("Places==========>", place);
         this.setState({
           latitude: place.latitude,
           longitude: place.longitude,
           name: place.name,
           address: place.address
         });
-        let copy = Object.assign({}, place);
       })
       .catch(error => console.log(error.message));
   }
 
   render() {
-    console.log("Google Place in State", this.state.name, this.state.address);
     const { navigate, goBack } = this.props.navigation;
     return (
       <KeyboardAwareScrollView
@@ -170,7 +169,7 @@ class AddEvent extends Component {
                 eventDesc: txt
               })}
           />
-          <View style={{marginLeft:15}}>
+          <View style={{ marginLeft: 15 }}>
             <TouchableOpacity
               style={{
                 flexDirection: "row",
@@ -206,7 +205,7 @@ class AddEvent extends Component {
           <Button
             title="Create Event"
             onPress={() => this.handleCreateEvent()}
-            buttonStyle={{backgroundColor:"#009688"}}
+            buttonStyle={{ backgroundColor: "#009688" }}
           />
         </Card>
 
@@ -221,7 +220,9 @@ class AddEvent extends Component {
           animationType="slide"
           visible={this.state.isModalOpen}
           style={{ display: "flex" }}
-          onRequestClose={() => {console.log("Modal has been closed.")}}
+          onRequestClose={() => {
+            console.log("Modal has been closed.");
+          }}
         >
           <View style={styles.container}>
             <MapView
